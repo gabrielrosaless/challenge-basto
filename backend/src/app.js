@@ -16,8 +16,8 @@ app.set('port', config.port);
 
 app.use(morgan('dev')) //Middleware to see requests info in console
 app.use(express.json()); //Middleware that only parses json and only looks at requests where the Content-Type header matches the type option.
-// app.use(express.urlencoded({ extended: false }));
-// app.use(cors());
+app.use(express.urlencoded({ extended: false }));
+app.use(cors());
 
 
 // Routes middlewares
