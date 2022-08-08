@@ -22,6 +22,14 @@ const defaultValues = {
 
 export const ListAnimals = () => {
    
+    const [pageState, setPageState] = useState({
+        isLoading:false,
+        data:[],
+        total:0,
+        page:0,
+        pageSize:5,
+    });
+    
     // const [page, setPage] = useState(0);
     // const [pageSize, setPageSize] = useState(5);
 
@@ -32,8 +40,14 @@ export const ListAnimals = () => {
 
     const fetchData = async () => {
         try {
-            let res = await getCows();
-            setAnimals(res);
+            console.log('ON');
+            
+            setPageState(old => ({ ...old, isLoading: true }));
+
+            const response = await getCows(pageState.page, pageState.pageSize);
+            // const json = await response.json();
+            // setAnimals(response);
+            setPageState(old => ({ ...old, isLoading: false, data: response.data, total: response.total}));
         } catch (error) {
             console.log('ERROR!!!', error)
         }
@@ -41,7 +55,7 @@ export const ListAnimals = () => {
 
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [pageState.page, pageState.pageSize]);
 
     const cleanData = () => {
         setFormValues(defaultValues);
@@ -132,29 +146,42 @@ export const ListAnimals = () => {
         }
     ];
 
-
-    console.log('animals:' , animals);
+    console.log('pageState:', pageState);
     
-
     return (
         <div>
             <FilterAnimals />
-            <Box sx={{ height: 400, width: '100%', marginBottom: 20 }}>
+            <Box sx={{ width: '100%', marginBottom: 20 }}>
                 <div style={{display:'flex', justifyContent:'space-between'}}>
                     <Typography mb={2} variant="h6">Lista de animales</Typography>
                     <Box sx={{ width: 'fit-content' }}>
                         <Button startIcon={<AddCircleRoundedIcon />} onClick={cleanData} variant="contained" color="primary" sx={{ borderRadius: '64px', fontWeight: 'bold', color: 'white' }}> Nuevo animal </Button>
                     </Box>
                 </div>
-                <DataGrid
+                {/* <DataGrid
                     getRowId={(row) => row._id}
                     style={{ padding: 5 }}
                     rows={animals}
                     columns={columns}
                     // pageSize={pageSize}
                     rowsPerPageOptions={[5,10,20]}
-                    // page={page}
+                    // page={page} 
                     pagination
+                /> */}
+                <DataGrid
+                    getRowId={(row) => row._id} 
+                    autoHeight
+                    rows={pageState.data}
+                    rowCount={pageState.total}
+                    loading={pageState.isLoading}
+                    rowsPerPageOptions={[5,10,20]}
+                    pagination
+                    page={pageState.page}
+                    pageSize={pageState.pageSize}
+                    paginationMode="server"
+                    onPageChange={(newPage) => setPageState(old => ({ ...old, page: newPage }))}
+                    onPageSizeChange={(newPageSize) => setPageState((newPageSize) => setPageState(old => ({ ...old, pageSize: newPageSize })))}
+                    columns={columns}
                 />
             </Box>
             <AnimalForm openModal={openModal} handleCloseModal={handleCloseModal} fetchData={fetchData} formValues={formValues} setFormValues={setFormValues} />

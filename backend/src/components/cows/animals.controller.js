@@ -1,12 +1,23 @@
 import Cow from './animals.models.js';
 
 export const getCows = async (req, res) => {
-    const {page , pageSize} = req.query;
+    let {page , pageSize} = req.query;
+
+    if (!page) page = 0;
+    if (!pageSize) pageSize = 5;
+
     try {
         const cows = await Cow.find({ isActive: true })
-            // .limit(pageSize)
-            // .skip(pageSize * page);
-        res.json(cows);
+            .limit(pageSize)
+            .skip(pageSize * page);
+
+        //Brings all animals for total rows pagination
+        const totalCows = await Cow.count({ isActive: true });
+        
+        res.json({
+            data: cows,
+            total: totalCows
+        });
     } catch (error) {
         res.status(500);
         res.json(error.message);
