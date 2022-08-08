@@ -1,9 +1,9 @@
 
 import axios from 'axios';
 
-export const getCows = async (page, pageSize) => {
+export const getCows = async () => {
     const response = await axios
-        .get(`http://localhost:4000/api/cows/?pageSize=${pageSize}&page=${page}`)
+        .get(`http://localhost:4000/api/cows/`)
         .then(response => response.data)
         .catch(error => {
             return `Error!: ${error.response}`;

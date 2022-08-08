@@ -1,19 +1,57 @@
-import React,{useState} from "react";
+import React,{useState, useEffect} from "react";
 import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
 import Button from '@mui/material/Button';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { Typography } from "@mui/material";
-import { deleteCow } from "../api/animalsAPI";
+import { getCows, deleteCow } from "../api/animalsAPI";
+import AnimalForm from "./AnimalForm";
+import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
+import FilterAnimals from "./FilterAnimals";
+const defaultValues = {
+    idSenasa: "",
+    typeAnimal: "",
+    weight: 0,
+    paddockName: "",
+    typeDisp: "",
+    numDisp: "",
+    isActive: true
+}
 
-export const ListAnimals = ({ animals, setAnimalData, openModal, handleCloseModal, handleOpenModal, fetchData }) => {
+
+export const ListAnimals = () => {
    
     // const [page, setPage] = useState(0);
     // const [pageSize, setPageSize] = useState(5);
 
+    const [openModal, setOpenModal] = React.useState(false);
+    const handleOpenModal = () => setOpenModal(true);
+    const handleCloseModal = () => setOpenModal(false);
+    const [animals, setAnimals] = useState([]);
+
+    const fetchData = async () => {
+        try {
+            let res = await getCows();
+            setAnimals(res);
+        } catch (error) {
+            console.log('ERROR!!!', error)
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const cleanData = () => {
+        setFormValues(defaultValues);
+        setOpenModal(true);
+    }
+
+    const [formValues, setFormValues] = useState(defaultValues);
+
     const onClickEdit = (item) => {
-        setAnimalData(item);
+        setFormValues(item);
         handleOpenModal(true);
     }
 
@@ -95,24 +133,34 @@ export const ListAnimals = ({ animals, setAnimalData, openModal, handleCloseModa
     ];
 
 
+    console.log('animals:' , animals);
     
 
     return (
         <div>
+            <FilterAnimals />
             <Box sx={{ height: 400, width: '100%', marginBottom: 20 }}>
-                <Typography mb={2} variant="h6">Lista de animales</Typography>
+                <div style={{display:'flex', justifyContent:'space-between'}}>
+                    <Typography mb={2} variant="h6">Lista de animales</Typography>
+                    <Box sx={{ width: 'fit-content' }}>
+                        <Button startIcon={<AddCircleRoundedIcon />} onClick={cleanData} variant="contained" color="primary" sx={{ borderRadius: '64px', fontWeight: 'bold', color: 'white' }}> Nuevo animal </Button>
+                    </Box>
+                </div>
                 <DataGrid
-                    getRowId={(row) => row.idSenasa}
+                    getRowId={(row) => row._id}
                     style={{ padding: 5 }}
                     rows={animals}
                     columns={columns}
-                    pageSize={pageSize}
+                    // pageSize={pageSize}
                     rowsPerPageOptions={[5,10,20]}
-                    page={page}
+                    // page={page}
                     pagination
                 />
             </Box>
+            <AnimalForm openModal={openModal} handleCloseModal={handleCloseModal} fetchData={fetchData} formValues={formValues} setFormValues={setFormValues} />
+
         </div>
+        
     )
 };
 

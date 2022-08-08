@@ -4,9 +4,9 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 
 const FilterAnimals = () => {
     return (
-        <div>
+        <div style={{marginBottom:30}}>
             <Typography variant="h6">Nombre potrero / Id senasa </Typography>
-            <OutlinedInput placeholder="Buscar animal por ID" />
+            <OutlinedInput sx={{width:'50%'}} placeholder="Buscar animal por ID" />
         </div>
     )
 }
