@@ -1,8 +1,7 @@
 import React from "react";
 import { ListAnimals } from "../components/ListAnimals";
 import Titles from "../components/Titles";
-import Container from '@mui/material/Container';
-import Stack from '@mui/material/Stack';
+import { Container, Stack } from '@mui/material';
 
 export const Animals = () => {
     

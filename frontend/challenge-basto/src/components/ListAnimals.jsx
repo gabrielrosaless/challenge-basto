@@ -1,14 +1,13 @@
 import React,{useState, useEffect} from "react";
-import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
-import Button from '@mui/material/Button';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import { Typography } from "@mui/material";
+import { Typography, Box, Button } from "@mui/material";
 import { getCows, deleteCow } from "../api/animalsAPI";
 import AnimalForm from "./AnimalForm";
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 import FilterAnimals from "./FilterAnimals";
+import ConfirmDialog from "./ConfirmDialog";
 
 const defaultValues = {
     idSenasa: "",
@@ -30,6 +29,9 @@ export const ListAnimals = () => {
         page:0,
         pageSize:5,
     });
+    
+    const [openDialog, setOpenDialog] = useState(false);
+    const [selectedCow, setSelectedCow] = useState({});
     
     const [openModal, setOpenModal] = React.useState(false);
     const handleOpenModal = () => setOpenModal(true);
@@ -64,7 +66,12 @@ export const ListAnimals = () => {
     }
 
     const onClickDelete = async (item) => {
-        await deleteCow(item._id);
+        setOpenDialog(true);
+        setSelectedCow(item);
+    }
+
+    const handleDelete = async () => {
+        await deleteCow(selectedCow._id);
         await fetchData();
     }
 
@@ -74,10 +81,7 @@ export const ListAnimals = () => {
                 <Button
                     variant="outlined"
                     color="secondary"
-                    onClick={() => {
-                        console.log('editar')
-                        onClickEdit(params.row)
-                    }}
+                    onClick={() => onClickEdit(params.row)}
                 >
                     <EditOutlinedIcon />
                 </Button>
@@ -85,10 +89,7 @@ export const ListAnimals = () => {
                     variant="outlined"
                     color="error"
                     style={{ marginLeft: '10px' }}
-                    onClick={() => {
-                        console.log('eliminar');
-                        onClickDelete(params.row)
-                    }}
+                    onClick={() =>  onClickDelete(params.row)}
                 >
                     <DeleteOutlineRoundedIcon />
                 </Button>
@@ -167,7 +168,12 @@ export const ListAnimals = () => {
                 />
             </Box>
             <AnimalForm openModal={openModal} handleCloseModal={handleCloseModal} fetchData={fetchData} formValues={formValues} setFormValues={setFormValues} />
-
+            <ConfirmDialog
+                title="Esta seguro que desea eliminar esta vaca?"
+                open={openDialog}
+                setOpen={setOpenDialog}
+                onConfirm={handleDelete}
+            />
         </div>
         
     )
