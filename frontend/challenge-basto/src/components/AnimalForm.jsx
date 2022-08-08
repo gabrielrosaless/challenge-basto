@@ -17,19 +17,27 @@ const AnimalForm = ({ openModal, handleCloseModal, fetchData, formValues, setFor
     };
 
     const handleSubmit = async (event) => {
-        console.log('Submit formValues:', formValues)
         if (formValues._id) {
-            await editCow(formValues);
+            const response = await editCow(formValues);
+            if (response.status === 200) {
+                await fetchData();
+                handleCloseModal();
+                event.preventDefault();
+                setShowAlert(false);
+            }
+            else {
+                setShowAlert(true);
+            }
         } else {
             const response = await createCow(formValues);
             if (response.status === 200){
                 await fetchData();
                 handleCloseModal();
                 event.preventDefault();
+                setShowAlert(false);
             }
             else {
                 setShowAlert(true);
-                console.log('error!')
             }
         }
     };

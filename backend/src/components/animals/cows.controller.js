@@ -1,3 +1,4 @@
+import e from 'express';
 import Cow from './cows.models.js';
 
 export const getCows = async (req, res) => {
@@ -57,6 +58,10 @@ export const updateCowByID = async (req, res) => {
     const { idSenasa, typeAnimal, weight, paddockName, typeDisp, numDisp } = req.body;
     
     try {
+        if (idSenasa.length !== 16 || numDisp.length !== 8 || paddockName > 200 || !weight){
+            return res.status(400).json({ message: 'Error! Revise los datos' });
+        }
+        
         const newCow = { idSenasa, typeAnimal, weight, paddockName, typeDisp, numDisp };
         
         const cow = await Cow.findByIdAndUpdate(id, newCow);

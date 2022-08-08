@@ -32,12 +32,15 @@ export const createCow = async (body) => {
 export const editCow = async (body) => {
     const response = await axios
         .put(`http://localhost:4000/api/cows/${body._id}`, body)
-        .then(response => response.data)
+        .then(response => response)
         .catch(error => {
             return `Error!: ${error.response}`;
         });
 
-    return response;
+    return {
+        response: response.data,
+        status: response.status
+    };
 }
 
 export const deleteCow = async (id) => {
