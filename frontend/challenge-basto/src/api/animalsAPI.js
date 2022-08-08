@@ -18,12 +18,15 @@ export const getCows = async (page, pageSize) => {
 export const createCow = async (body) => {
     const response = await axios
         .post("http://localhost:4000/api/cows/", body)
-        .then(response => response.data)
+        .then(response => response)
         .catch(error => {
             return `Error!: ${error.response}`;
         });
 
-    return response;
+    return {
+        response: response.data,
+        status: response.status
+    };
 }
 
 export const editCow = async (body) => {

@@ -141,9 +141,13 @@ export const ListAnimals = () => {
         }
     ];
     
+    const handleFilter = (e) => {
+        
+    }
+
     return (
         <div>
-            <FilterAnimals />
+            <FilterAnimals data={pageState.data} handleChange={handleFilter} />
             <Box sx={{ width: '100%', marginBottom: 20 }}>
                 <div style={{display:'flex', justifyContent:'space-between'}}>
                     <Typography mb={2} variant="h6">Lista de animales</Typography>

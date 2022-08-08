@@ -1,18 +1,13 @@
 import React, { useState } from "react";
-import Modal from '@mui/material/Modal';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import { Typography } from "@mui/material";
+import { Modal, TextField,Box, Typography, Alert, Button, IconButton, Divider } from "@mui/material";
 import CustomSelect from "../components/CustomSelect";
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import Button from '@mui/material/Button';
 import { createCow, editCow } from "../api/animalsAPI";
 
 const AnimalForm = ({ openModal, handleCloseModal, fetchData, formValues, setFormValues }) => {
 
-
+    const [showAlert, setShowAlert] = useState(false);
+    
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormValues({
@@ -26,11 +21,17 @@ const AnimalForm = ({ openModal, handleCloseModal, fetchData, formValues, setFor
         if (formValues._id) {
             await editCow(formValues);
         } else {
-            await createCow(formValues);
+            const response = await createCow(formValues);
+            if (response.status === 200){
+                await fetchData();
+                handleCloseModal();
+                event.preventDefault();
+            }
+            else {
+                setShowAlert(true);
+                console.log('error!')
+            }
         }
-        await fetchData();
-        handleCloseModal();
-        event.preventDefault();
     };
 
     return (
@@ -117,6 +118,10 @@ const AnimalForm = ({ openModal, handleCloseModal, fetchData, formValues, setFor
                                 Guardar
                             </Button>
                         </div>
+                        {showAlert &&
+                            <Alert onClose={() => setShowAlert(false)} severity="warning">Error! Revise los datos.</Alert>
+                        }
+
                     </div>
                 </Box>
             </Modal>

@@ -3,7 +3,7 @@ import express from 'express';
 import config from './config.js';
 import cors from 'cors';
 import morgan from 'morgan';
-import cowsRoutes from './components/cows/animals.routes.js';
+import cowsRoutes from './components/animals/cows.routes.js';
 import moongose from './database/connection.js';
 
 const app = express();

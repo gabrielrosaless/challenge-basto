@@ -1,4 +1,4 @@
-import Cow from './animals.models.js';
+import Cow from './cows.models.js';
 
 export const getCows = async (req, res) => {
     let {page , pageSize} = req.query;
@@ -7,11 +7,12 @@ export const getCows = async (req, res) => {
     if (!pageSize) pageSize = 5;
 
     try {
+        // Get cows limit by paginations parameters.
         const cows = await Cow.find({ isActive: true })
             .limit(pageSize)
             .skip(pageSize * page);
 
-        //Brings all animals for total rows pagination
+        // Get total rows.
         const totalCows = await Cow.count({ isActive: true });
         
         res.status(200).json({
@@ -43,7 +44,7 @@ export const createCow = async (req, res) => {
     try {
         const cow = new Cow({ idSenasa, typeAnimal, weight, paddockName, typeDisp, numDisp })
         await cow.save();
-        res.status(200).json({ status: 'Cow saved' });
+        res.status(200).json({ message: 'Cow saved' });
     } catch (error) {
         res.status(500);
         res.json(error.message);
@@ -59,9 +60,9 @@ export const updateCowByID = async (req, res) => {
         const newCow = { idSenasa, typeAnimal, weight, paddockName, typeDisp, numDisp };
         
         const cow = await Cow.findByIdAndUpdate(id, newCow);
-        if (cow) res.status(200).json({ status: 'Cow Updated.' });
+        if (cow) res.status(200).json({ message: 'Cow Updated.' });
         else{
-            res.status(400).json({ status: 'Cow doesnt exist.' });
+            res.status(400).json({ message: 'Cow doesnt exist.' });
         }
     } catch (error) {
         res.status(500);
@@ -75,7 +76,7 @@ export const deleteCowByID = async (req, res) => {
 
     try {
         await Cow.findByIdAndUpdate(id, {isActive:false});
-        res.status(200).json({ status: 'Cow deleted' }); 
+        res.status(200).json({ message: 'Cow deleted' }); 
 
     } catch (error) {
         res.status(500);
