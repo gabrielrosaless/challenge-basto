@@ -9,6 +9,7 @@ import { getCows, deleteCow } from "../api/animalsAPI";
 import AnimalForm from "./AnimalForm";
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 import FilterAnimals from "./FilterAnimals";
+
 const defaultValues = {
     idSenasa: "",
     typeAnimal: "",
@@ -30,9 +31,6 @@ export const ListAnimals = () => {
         pageSize:5,
     });
     
-    // const [page, setPage] = useState(0);
-    // const [pageSize, setPageSize] = useState(5);
-
     const [openModal, setOpenModal] = React.useState(false);
     const handleOpenModal = () => setOpenModal(true);
     const handleCloseModal = () => setOpenModal(false);
@@ -40,13 +38,8 @@ export const ListAnimals = () => {
 
     const fetchData = async () => {
         try {
-            console.log('ON');
-            
             setPageState(old => ({ ...old, isLoading: true }));
-
             const response = await getCows(pageState.page, pageState.pageSize);
-            // const json = await response.json();
-            // setAnimals(response);
             setPageState(old => ({ ...old, isLoading: false, data: response.data, total: response.total}));
         } catch (error) {
             console.log('ERROR!!!', error)
@@ -145,8 +138,6 @@ export const ListAnimals = () => {
             flex: 1,
         }
     ];
-
-    console.log('pageState:', pageState);
     
     return (
         <div>
@@ -158,16 +149,6 @@ export const ListAnimals = () => {
                         <Button startIcon={<AddCircleRoundedIcon />} onClick={cleanData} variant="contained" color="primary" sx={{ borderRadius: '64px', fontWeight: 'bold', color: 'white' }}> Nuevo animal </Button>
                     </Box>
                 </div>
-                {/* <DataGrid
-                    getRowId={(row) => row._id}
-                    style={{ padding: 5 }}
-                    rows={animals}
-                    columns={columns}
-                    // pageSize={pageSize}
-                    rowsPerPageOptions={[5,10,20]}
-                    // page={page} 
-                    pagination
-                /> */}
                 <DataGrid
                     getRowId={(row) => row._id} 
                     autoHeight
@@ -180,7 +161,7 @@ export const ListAnimals = () => {
                     pageSize={pageState.pageSize}
                     paginationMode="server"
                     onPageChange={(newPage) => setPageState(old => ({ ...old, page: newPage }))}
-                    onPageSizeChange={(newPageSize) => setPageState((newPageSize) => setPageState(old => ({ ...old, pageSize: newPageSize })))}
+                    onPageSizeChange={(newPageSize) => setPageState(old => ({ ...old, pageSize: newPageSize }))}
                     columns={columns}
                 />
             </Box>
