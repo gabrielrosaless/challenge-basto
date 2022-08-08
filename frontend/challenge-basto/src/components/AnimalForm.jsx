@@ -8,34 +8,10 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Button from '@mui/material/Button';
-import { createCow } from "../api/animalsAPI";
+import { createCow, editCow } from "../api/animalsAPI";
 
-const AnimalForm = ({ openModal, handleCloseModal, setToggle, toggle }) => {
-    const style = {
-        modal: {
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: 400,
-            bgcolor: 'background.paper',
-            border: '1px solid #000',
-            boxShadow: 24,
-            p: 4,
-        },
-    }
-
-    const defaultValues = {
-        idSenasa: "",
-        typeAnimal: "",
-        weight: 0,
-        paddockName: "",
-        typeDisp: "",
-        numDisp: "",
-        isActive: true
-    }
-
-    const [formValues, setFormValues] = useState(defaultValues);
+const AnimalForm = ({ openModal, handleCloseModal, fetchData, formValues, setFormValues }) => {
+    
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -46,8 +22,13 @@ const AnimalForm = ({ openModal, handleCloseModal, setToggle, toggle }) => {
     };
 
     const handleSubmit = async (event) => {
-        await createCow(formValues);
-        setToggle(toggle => !toggle);
+        console.log('Submit formValues:', formValues)
+        if (formValues._id){
+            await editCow(formValues);
+        }else{
+            await createCow(formValues);
+        }
+        await fetchData();
         handleCloseModal();
         event.preventDefault();
     };
@@ -140,6 +121,20 @@ const AnimalForm = ({ openModal, handleCloseModal, setToggle, toggle }) => {
             </Modal>
         </div>
     );
+}
+
+const style = {
+    modal: {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 400,
+        bgcolor: 'background.paper',
+        border: '1px solid #000',
+        boxShadow: 24,
+        p: 4,
+    },
 }
 
 export default AnimalForm;
