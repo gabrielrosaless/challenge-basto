@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
 import Button from '@mui/material/Button';
@@ -8,6 +8,9 @@ import { Typography } from "@mui/material";
 import { deleteCow } from "../api/animalsAPI";
 
 export const ListAnimals = ({ animals, setAnimalData, openModal, handleCloseModal, handleOpenModal, fetchData }) => {
+   
+    // const [page, setPage] = useState(0);
+    // const [pageSize, setPageSize] = useState(5);
 
     const onClickEdit = (item) => {
         setAnimalData(item);
@@ -103,8 +106,10 @@ export const ListAnimals = ({ animals, setAnimalData, openModal, handleCloseModa
                     style={{ padding: 5 }}
                     rows={animals}
                     columns={columns}
-                    pageSize={5}
-                    rowsPerPageOptions={[5]}
+                    pageSize={pageSize}
+                    rowsPerPageOptions={[5,10,20]}
+                    page={page}
+                    pagination
                 />
             </Box>
         </div>

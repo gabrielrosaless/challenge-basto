@@ -112,10 +112,17 @@ const AnimalForm = ({ openModal, handleCloseModal, fetchData, formValues, setFor
                                 value={formValues.numDisp}
                                 onChange={handleInputChange}
                             />
+                            <div style={{ display: 'flex', justifyContent: 'space-between', padding: 15 }}>
+                                <Button sx={{ width: 'fit-content', fontWeight: 'bold', color: 'white' }} variant="contained" color="gray" onClick={handleSubmit}>
+                                    Cancelar
+                                </Button>
+                                <Button sx={{ width: 'fit-content', fontWeight: 'bold', color: 'white' }} variant="contained" color="primary" onClick={handleSubmit}>
+                                    Guardar
+                                </Button>
+
+                            </div>
                         </div>
-                        <Button variant="contained" color="primary" onClick={handleSubmit}>
-                            Guardar
-                        </Button>
+                       
                     </Box>
                 </form>
             </Modal>

@@ -16,6 +16,9 @@ const theme = createTheme({
     secondary: {
       main: '#BACC88',
     },
+    gray:{
+      main:'gray'
+    }
   },
 });
 

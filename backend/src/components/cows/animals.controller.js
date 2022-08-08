@@ -1,8 +1,11 @@
 import Cow from './animals.models.js';
 
 export const getCows = async (req, res) => {
+    const {page , pageSize} = req.query;
     try {
-        const cows = await Cow.find({ isActive: true });
+        const cows = await Cow.find({ isActive: true })
+            .limit(pageSize)
+            .skip(pageSize * page);
         res.json(cows);
     } catch (error) {
         res.status(500);

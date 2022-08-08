@@ -24,12 +24,11 @@ export const Animals = () => {
     const [openModal, setOpenModal] = React.useState(false);
     const handleOpenModal = () => setOpenModal(true);
     const handleCloseModal = () => setOpenModal(false);
-    const [toggle, setToggle] = useState(false);
     const [cows, setCows] = useState([]);
 
     const fetchData = async () => {
         try {
-            let res = await getCows();
+            let res = await getCows(0,5);
             setCows(res);
         } catch (error) {
             console.log('ERROR!!!', error)
@@ -38,7 +37,7 @@ export const Animals = () => {
     
     useEffect(() => {
         fetchData();
-    }, [toggle]);
+    }, []);
     
     const cleanData = () => {
         setFormValues(defaultValues);
