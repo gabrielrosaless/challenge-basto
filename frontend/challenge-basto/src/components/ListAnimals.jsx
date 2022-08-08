@@ -34,18 +34,19 @@ export const ListAnimals = () => {
     const [openModal, setOpenModal] = React.useState(false);
     const handleOpenModal = () => setOpenModal(true);
     const handleCloseModal = () => setOpenModal(false);
-    const [animals, setAnimals] = useState([]);
 
     const fetchData = async () => {
         try {
             setPageState(old => ({ ...old, isLoading: true }));
-            const response = await getCows(pageState.page, pageState.pageSize);
-            setPageState(old => ({ ...old, isLoading: false, data: response.data, total: response.total}));
+            const {response, status} = await getCows(pageState.page, pageState.pageSize);
+            if(status === 200){
+                setPageState(old => ({ ...old, isLoading: false, data: response.data, total: response.total}));
+            }
         } catch (error) {
             console.log('ERROR!!!', error)
         }
     };
-
+    
     useEffect(() => {
         fetchData();
     }, [pageState.page, pageState.pageSize]);

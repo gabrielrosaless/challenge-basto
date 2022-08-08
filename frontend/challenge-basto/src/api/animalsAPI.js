@@ -4,11 +4,15 @@ import axios from 'axios';
 export const getCows = async (page, pageSize) => {
     const response = await axios
         .get(`http://localhost:4000/api/cows/?pageSize=${pageSize}&page=${page}`)
-        .then(response => response.data)
+        .then(response => response)
         .catch(error => {
             return `Error!: ${error.response}`;
         });
-    return response;
+    
+    return {
+        response:response.data,
+        status:response.status
+    };
 }
 
 export const createCow = async (body) => {

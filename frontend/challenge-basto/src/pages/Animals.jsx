@@ -1,7 +1,6 @@
 import React from "react";
 import { ListAnimals } from "../components/ListAnimals";
 import Titles from "../components/Titles";
-import FilterAnimals from "../components/FilterAnimals";
 import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
 
@@ -16,7 +15,6 @@ export const Animals = () => {
                     style={{width:'100%'}}
                 >
                     <Titles title='Admin / Establecimiento' subTitle='Gestión de animales'/>
-                    
                     <ListAnimals  />  
                 </Stack>
             </Container>
