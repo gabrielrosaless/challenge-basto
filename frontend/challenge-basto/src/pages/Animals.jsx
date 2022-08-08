@@ -1,26 +1,56 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { ListAnimals } from "../components/ListAnimals";
-import { Typography } from "@mui/material";
 import Button from '@mui/material/Button';
-import OutlinedInput from '@mui/material/OutlinedInput';
-
+import { getCows } from "../api/animalsAPI";
+import Titles from "../components/Titles";
+import FilterAnimals from "../components/FilterAnimals";
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
+import Stack from '@mui/material/Stack';
+import AnimalForm from "../components/AnimalForm";
 
 export const Animals = () => {
-    return (
-        <div style={{ backgroundColor: '#F8F9FA' }}>
-            {/* <div style={{ display: 'flex', flexDirection:'column', justifyContent: 'flex-start', alignItems: 'center',paddingTop:20 }}> */}
-            <div style={{ padding: 20, display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                <Typography variant="h6" color='secondary'> Admin / Establecimiento</Typography>
-                <Typography variant="h4">Gestión de animales</Typography>
-                <Button variant="contained" color="primary">
-                    <Typography style={{ fontWeight: 'bold', color:'white' }}> Crear nuevo animal</Typography>
-                </Button>
-                <Typography variant="h6">Nombre potrero / Id senasa </Typography>
-                <OutlinedInput placeholder="Buscar animal por ID" />
-                <ListAnimals/>  
-            </div>
+    const [openModal, setOpenModal] = React.useState(false);
+    const handleOpenModal = () => setOpenModal(true);
+    const handleCloseModal = () => setOpenModal(false);
+    const [toggle, setToggle] = useState(false);
 
+    const [cows, setCows] = useState([]);
+    
+    const fetchData = async () => {
+        try {
+            let res = await getCows();
+            setCows(res);
+        } catch (error) {
+            console.log('ERROR!!!', error)
+        }
+    };
+    
+    useEffect(() => {
+        fetchData();
+    }, [toggle]);
+    
+    
+
+    return (
+        <div style={{ backgroundColor: '#F8F9FA', display:'flex', alignItems:'center', justifyContent:'center', minHeight:'120vh'}}>
+            <Container>
+
+                <Stack
+                    justifyContent="space-evenly"
+                    spacing={3}
+                    style={{width:'100%'}}
+                >
+
+                <Titles title='Admin / Establecimiento' subTitle='Gestión de animales'/>
+                <Box sx={{width:'fit-content'}}>
+                    <Button onClick={handleOpenModal} variant="contained" color="primary" sx={{ borderRadius: '64px', fontWeight: 'bold', color:'white' }}> Nuevo animal </Button>
+                </Box>
+                <FilterAnimals/>
+                <ListAnimals animals={cows} />  
+                </Stack>
+                <AnimalForm openModal={openModal} handleCloseModal={handleCloseModal} setToggle={setToggle} toggle={toggle}/>
+            </Container>
         </div>
-        
     );
 };

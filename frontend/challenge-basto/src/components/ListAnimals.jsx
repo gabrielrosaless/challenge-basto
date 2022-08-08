@@ -7,15 +7,16 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { Typography } from "@mui/material";
 
 
-export const ListAnimals = () => {
+export const ListAnimals = ({animals}) => {
+    console.log('VACAS:', animals)
     return (
-        // <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
         <div>
-            <Box sx={{ height: 400, width: 750}}>
+            <Box sx={{ height:400, width: '100%', marginBottom:20}}>
                 <Typography mb={2} variant="h6">Lista de animales</Typography>
-                <DataGrid
+                <DataGrid 
+                    getRowId={(row) => row.idSenasa}
                     style={{ padding: 5 }}
-                    rows={rows}
+                    rows={animals}
                     columns={columns}
                     pageSize={5}
                     rowsPerPageOptions={[5]}
@@ -31,8 +32,6 @@ const renderDetailsButton = (params) => {
             <Button
                 variant="outlined"
                 color="secondary"
-                size="small"
-                style={{}}
                 onClick={() => {
                     console.log('editar')
                     // onClickEdit(params.row)
@@ -43,7 +42,6 @@ const renderDetailsButton = (params) => {
             <Button
                 variant="outlined"
                 color="error"
-                size="small"
                 style={{ marginLeft: '10px' }}
                 onClick={() => {
                     console.log('eliminar');
@@ -61,46 +59,46 @@ const renderDetailsButton = (params) => {
 
 const columns = [
     {
-        field: 'id',
+        field: 'idSenasa',
         headerName: 'ID Senasa',
-        width: 40,
+        flex: 1,
         align: 'center',
     },
     {
         field: 'typeAnimal',
         headerName: 'Tipo Animal',
-        width: 100,
+        flex: 1,
         align: 'center',
     },
     {
         field: 'weight',
         headerName: 'Peso (kg)',
-        minWidth: 100,
+        flex: 1,
         align: 'center',
     },
     {
         field: 'paddockName',
         headerName: 'Nombre',
-        minWidth: 100,
+        flex: 1,
         align: 'center',
     },
     {
         field: 'typeDisp',
         headerName: 'Dispositivo',
-        minWidth: 100,
+        flex: 1,
         align: 'center',
     },
     {
         field: 'numDisp',
         headerName: 'N° Dispositivo',
-        minWidth: 100,
+        flex: 1,
         align: 'center',
     },
     {
         field: 'actions',
         headerName: 'Acciones',
         renderCell: renderDetailsButton,
-        width: 150
+        flex: 1,
     }
 ];
 
