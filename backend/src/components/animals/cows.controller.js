@@ -1,5 +1,7 @@
 import e from 'express';
 import Cow from './cows.models.js';
+import {validateInputs} from '../../utils/validateData.js'; 
+
 
 export const getCows = async (req, res) => {
     let {page , pageSize} = req.query;
@@ -43,6 +45,11 @@ export const createCow = async (req, res) => {
     const { idSenasa, typeAnimal, weight, paddockName, typeDisp, numDisp } = req.body;
 
     try {
+        const validate = await validateInputs(req.body);
+        if (!validate.isOk){
+            res.status(400).json({ message: validate.msg });
+            return;
+        }
         const cow = new Cow({ idSenasa, typeAnimal, weight, paddockName, typeDisp, numDisp })
         await cow.save();
         res.status(200).json({ message: 'Cow saved' });
@@ -58,8 +65,10 @@ export const updateCowByID = async (req, res) => {
     const { idSenasa, typeAnimal, weight, paddockName, typeDisp, numDisp } = req.body;
     
     try {
-        if (idSenasa.length !== 16 || numDisp.length !== 8 || paddockName > 200 || !weight){
-            return res.status(400).json({ message: 'Error! Revise los datos' });
+        const validate = await validateInputs(req.body);
+        if (!validate.isOk) {
+            res.status(400).json({ message: validate.msg });
+            return;
         }
         
         const newCow = { idSenasa, typeAnimal, weight, paddockName, typeDisp, numDisp };

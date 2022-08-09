@@ -4,6 +4,7 @@ import { Modal, TextField, Box, Typography, Alert, Button, IconButton, Divider }
 import CustomSelect from "./CustomSelect";
 import CloseIcon from '@mui/icons-material/Close';
 import { createCow, editCow } from "../api/animalsAPI";
+import { useEffect } from 'react';
 
 export const AnimalForm = ({ openModal, handleCloseModal, fetchData, formValues }) => {
    
@@ -18,7 +19,8 @@ export const AnimalForm = ({ openModal, handleCloseModal, fetchData, formValues 
     }
     
     const [showAlert, setShowAlert] = useState(false);
-
+    const [errorMsg, setErrorMsg] = useState('');
+        
     const formik = useFormik({
         initialValues: formValues || defaultValues,
         onSubmit: async values =>  {
@@ -29,17 +31,20 @@ export const AnimalForm = ({ openModal, handleCloseModal, fetchData, formValues 
                     handleCloseModal();
                     setShowAlert(false);
                 }
-                else {
-                    setShowAlert(true);
+                else { 
+                    setErrorMsg(response.message);
+                    setShowAlert(true); 
                 }
             } else {
                 const response = await createCow(values);
+                
                 if (response.status === 200) {
                     await fetchData();
                     handleCloseModal();
                     setShowAlert(false);
                 }
                 else {
+                    setErrorMsg(response.message);
                     setShowAlert(true);
                 }
             }
@@ -133,7 +138,7 @@ export const AnimalForm = ({ openModal, handleCloseModal, fetchData, formValues 
                             </Button>
                         </div>
                         {showAlert &&
-                            <Alert onClose={() => setShowAlert(false)} severity="warning">Error! Revise los datos.</Alert>
+                            <Alert onClose={() => setShowAlert(false)} severity="warning">{errorMsg || 'Error! Revise los datos por favor.'}</Alert>
                         }
 
                     </div>

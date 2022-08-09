@@ -20,12 +20,16 @@ export const createCow = async (body) => {
         .post("http://localhost:4000/api/cows/", body)
         .then(response => response)
         .catch(error => {
-            return `Error!: ${error.response}`;
+            return {
+                message: error.response.data.message,
+                status: error.response.status,
+            };
         });
 
     return {
         response: response.data,
-        status: response.status
+        status: response.status,
+        message: response.message
     };
 }
 
@@ -33,13 +37,16 @@ export const editCow = async (body) => {
     const response = await axios
         .put(`http://localhost:4000/api/cows/${body._id}`, body)
         .then(response => response)
-        .catch(error => {
-            return `Error!: ${error.response}`;
+        .catch((error) => {
+            return {
+                message: error.response.data.message,
+                status: error.response.status,
+            };
         });
-
     return {
         response: response.data,
-        status: response.status
+        status: response.status,
+        message:response.message
     };
 }
 
