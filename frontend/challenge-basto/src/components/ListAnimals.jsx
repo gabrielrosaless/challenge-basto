@@ -4,20 +4,10 @@ import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { Typography, Box, Button } from "@mui/material";
 import { getCows, deleteCow } from "../api/animalsAPI";
-import AnimalForm from "./AnimalForm";
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 import FilterAnimals from "./FilterAnimals";
 import ConfirmDialog from "./ConfirmDialog";
-
-const defaultValues = {
-    idSenasa: "",
-    typeAnimal: "",
-    weight: 0,
-    paddockName: "",
-    typeDisp: "",
-    numDisp: "",
-    isActive: true
-}
+import { AnimalForm } from "./AnimalForm";
 
 
 export const ListAnimals = () => {
@@ -54,11 +44,11 @@ export const ListAnimals = () => {
     }, [pageState.page, pageState.pageSize]);
 
     const cleanData = () => {
-        setFormValues(defaultValues);
+        setFormValues(null);
         setOpenModal(true);
     }
 
-    const [formValues, setFormValues] = useState(defaultValues);
+    const [formValues, setFormValues] = useState(null);
 
     const onClickEdit = (item) => {
         setFormValues(item);
@@ -171,7 +161,7 @@ export const ListAnimals = () => {
                     columns={columns}
                 />
             </Box>
-            <AnimalForm openModal={openModal} handleCloseModal={handleCloseModal} fetchData={fetchData} formValues={formValues} setFormValues={setFormValues} />
+            <AnimalForm formValues={formValues} openModal={openModal} handleCloseModal={handleCloseModal} fetchData={fetchData} />
             <ConfirmDialog
                 title="Esta seguro que desea eliminar esta vaca?"
                 open={openDialog}

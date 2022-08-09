@@ -1,49 +1,54 @@
-import React, { useState } from "react";
-import { Modal, TextField,Box, Typography, Alert, Button, IconButton, Divider } from "@mui/material";
-import CustomSelect from "../components/CustomSelect";
+import React, {useState} from 'react';
+import { useFormik } from 'formik';
+import { Modal, TextField, Box, Typography, Alert, Button, IconButton, Divider } from "@mui/material";
+import CustomSelect from "./CustomSelect";
 import CloseIcon from '@mui/icons-material/Close';
 import { createCow, editCow } from "../api/animalsAPI";
 
-const AnimalForm = ({ openModal, handleCloseModal, fetchData, formValues, setFormValues }) => {
-
-    const [showAlert, setShowAlert] = useState(false);
+export const AnimalForm = ({ openModal, handleCloseModal, fetchData, formValues }) => {
+   
+    const defaultValues = {
+        idSenasa: "",
+        typeAnimal: "",
+        weight: 0,
+        paddockName: "",
+        typeDisp: "",
+        numDisp: "",
+        isActive: true
+    }
     
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormValues({
-            ...formValues,
-            [name]: value,
-        });
-    };
+    const [showAlert, setShowAlert] = useState(false);
 
-    const handleSubmit = async (event) => {
-        if (formValues._id) {
-            const response = await editCow(formValues);
-            if (response.status === 200) {
-                await fetchData();
-                handleCloseModal();
-                event.preventDefault();
-                setShowAlert(false);
+    const formik = useFormik({
+        initialValues: formValues || defaultValues,
+        onSubmit: async values =>  {
+            if (values._id) {
+                const response = await editCow(values);
+                if (response.status === 200) {
+                    await fetchData();
+                    handleCloseModal();
+                    setShowAlert(false);
+                }
+                else {
+                    setShowAlert(true);
+                }
+            } else {
+                const response = await createCow(values);
+                if (response.status === 200) {
+                    await fetchData();
+                    handleCloseModal();
+                    setShowAlert(false);
+                }
+                else {
+                    setShowAlert(true);
+                }
             }
-            else {
-                setShowAlert(true);
-            }
-        } else {
-            const response = await createCow(formValues);
-            if (response.status === 200){
-                await fetchData();
-                handleCloseModal();
-                event.preventDefault();
-                setShowAlert(false);
-            }
-            else {
-                setShowAlert(true);
-            }
-        }
-    };
-
+        },
+        enableReinitialize:true
+    });
+    
     return (
-        <div>
+        <form onSubmit={formik.handleSubmit}>
             <Modal
                 open={openModal}
             >
@@ -59,33 +64,34 @@ const AnimalForm = ({ openModal, handleCloseModal, fetchData, formValues, setFor
                         <TextField
                             style={{ margin: 5 }}
                             required
-                            id="standard-required"
+                            id="idSenasa"
                             label="ID Senasa"
                             variant="standard"
                             name="idSenasa"
+                            type="text"
                             inputProps={{ maxLength: 16 }}
-                            value={formValues.idSenasa}
-                            onChange={handleInputChange}
+                            value={formik.values.idSenasa}
+                            onChange={formik.handleChange}
                         />
                         <CustomSelect
                             options={['Novillo', 'Toro', 'Vaquillona']}
-                            labelId='lbl-type-animal'
-                            labelSelect='select-type-animal'
+                            labelId='typeAnimal'
+                            labelSelect='typeAnimal'
                             title='Tipo animal'
                             name="typeAnimal"
-                            value={formValues.typeAnimal}
-                            handleInputChange={handleInputChange}
+                            value={formik.values.typeAnimal}
+                            handleInputChange={formik.handleChange}
                         />
                         <TextField
                             style={{ marginTop: 20, marginLeft: 5, marginRight: 5 }}
                             required
-                            id="standard-read-only-input"
+                            id="weight"
                             label="Peso (Kg.)"
                             variant="standard"
                             type="number"
                             name="weight"
-                            value={formValues.weight}
-                            onChange={handleInputChange}
+                            value={formik.values.weight}
+                            onChange={formik.handleChange}
                         />
                         <TextField
                             style={{ margin: 5 }}
@@ -95,8 +101,8 @@ const AnimalForm = ({ openModal, handleCloseModal, fetchData, formValues, setFor
                             variant="standard"
                             name="paddockName"
                             inputProps={{ maxLength: 200 }}
-                            value={formValues.paddockName}
-                            onChange={handleInputChange}
+                            value={formik.values.paddockName}
+                            onChange={formik.handleChange}
                         />
                         <CustomSelect
                             options={['COLLAR', 'CARAVANA']}
@@ -104,8 +110,8 @@ const AnimalForm = ({ openModal, handleCloseModal, fetchData, formValues, setFor
                             labelSelect='select-type-disp'
                             title='Tipo dispositivo'
                             name="typeDisp"
-                            value={formValues.typeDisp}
-                            handleInputChange={handleInputChange}
+                            value={formik.values.typeDisp}
+                            handleInputChange={formik.handleChange}
                         />
                         <TextField
                             style={{ margin: 5 }}
@@ -115,14 +121,14 @@ const AnimalForm = ({ openModal, handleCloseModal, fetchData, formValues, setFor
                             variant="standard"
                             name="numDisp"
                             inputProps={{ maxLength: 8 }}
-                            value={formValues.numDisp}
-                            onChange={handleInputChange}
+                            value={formik.values.numDisp}
+                            onChange={formik.handleChange}
                         />
                         <div style={{ display: 'flex', justifyContent: 'space-between', padding: 15 }}>
                             <Button sx={style.button} variant="contained" color="gray" onClick={handleCloseModal}>
                                 Cancelar
                             </Button>
-                            <Button sx={style.button} variant="contained" color="primary" onClick={handleSubmit}>
+                            <Button type="submit" sx={style.button} variant="contained" color="primary">
                                 Guardar
                             </Button>
                         </div>
@@ -132,10 +138,11 @@ const AnimalForm = ({ openModal, handleCloseModal, fetchData, formValues, setFor
 
                     </div>
                 </Box>
+
             </Modal>
-        </div>
+        </form>
     );
-}
+};
 
 const style = {
     modal: {
@@ -145,15 +152,14 @@ const style = {
         transform: 'translate(-50%, -50%)',
         width: 400,
         bgcolor: 'background.paper',
-        border: '1px solid #000',
+        border: '1px solid #gray',
+        borderRadius:2,
         boxShadow: 24,
         p: 4,
     },
-    button: { 
-        width: 'fit-content', 
-        fontWeight: 'bold', 
-        color: 'white' 
+    button: {
+        width: 'fit-content',
+        fontWeight: 'bold',
+        color: 'white'
     }
 }
-
-export default AnimalForm;
