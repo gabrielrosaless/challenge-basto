@@ -80,9 +80,11 @@ export const deleteCowByID = async (req, res) => {
     const { id } = req.params;
 
     try {
-        await Cow.findByIdAndUpdate(id, {isActive:false});
-        res.status(200).json({ message: 'Cow deleted' }); 
-
+        const response = await Cow.findByIdAndUpdate(id, {isActive:false});
+        if (response) res.status(200).json({ message: 'Cow deleted.' }); 
+        else{
+            res.status(400).json({ message: 'Cow doesnt exist.' }); 
+        }
     } catch (error) {
         res.status(500);
         res.json(error.message);

@@ -3,8 +3,15 @@ import moongose from 'mongoose';
 
 const URI = 'mongodb://localhost:27017/basto-database';
 
-moongose.connect(URI)
-    .then(db => console.log('DB is connected.'))
-    .catch( err => console.log(err));
+const connectDB = async () => { 
+    try {
+        const db = await moongose.connect(URI)
+            .then(db => db)
+            .catch(err => console.log(err));
+    } catch (error) {
+        console.log(error);
+    }
+}
 
-export default moongose;
+
+export default connectDB;

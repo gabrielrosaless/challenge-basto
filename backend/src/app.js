@@ -4,7 +4,6 @@ import config from './config.js';
 import cors from 'cors';
 import morgan from 'morgan';
 import cowsRoutes from './components/animals/cows.routes.js';
-import moongose from './database/connection.js';
 
 const app = express();
 
@@ -22,6 +21,9 @@ app.use(cors());
 
 // Routes middlewares
 app.use('/api/cows', cowsRoutes);
-
+app.get('/ping', (req, res) => {
+    console.log('hola')
+    res.send('pong');
+})
 
 export default app;
