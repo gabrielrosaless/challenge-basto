@@ -1,7 +1,7 @@
 import moongose from 'mongoose';
+import config from '../config.js';
 
-
-const URI = 'mongodb://localhost:27017/basto-database';
+const URI = `mongodb://${config.MONGO_HOST}:${config.MONGO_PORT}/${config.MONGO_DATABASE}`
 
 const connectDB = async () => { 
     try {
