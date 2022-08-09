@@ -49,9 +49,21 @@ To run unit testing run the follow comand:
 
 3) Install frontend dependences 
     ### `npm i`
+
+4) Create an .env file inside frontend\challenge-basto\ directory with API URL as follows: 
+```
+REACT_APP_URL_API=your-api-url
+```
+For example:
+```
+REACT_APP_URL_API=http://localhost:4000/api/cows
+```
+* Important: the variable has to begin with 'REACT_APP_'
+
 4) Runs the app in the development mode.\
    Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
    ### `npm start`
 
    The page will reload when you make changes.\
    You may also see any lint errors in the console.
+
