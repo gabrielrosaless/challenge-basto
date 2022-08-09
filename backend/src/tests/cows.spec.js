@@ -46,8 +46,8 @@ describe('TEST all methods from /api/cows (GET/POST/PUT)', () => {
                 }
                 await connectDB();
                 const response = await request(app).post('/api/cows').send(auxCow);
-                expect(response.status).toBe(500);
-                expect(response.body).toBe('Cow validation failed: idSenasa: ID Senasa is required');
+                expect(response.status).toBe(400);
+                expect(response.body.message).toBe('El ID Senasa debe contener 16 caracteres.');
             })
         
         test("/api/cows POST should pass (200)",
