@@ -44,9 +44,6 @@ To run unit testing run the follow comand:
 
 ## Steps to run client application (frontend).
 
-1) Clone the project in any folder. For example:
-    ### `git clone https://github.com/gabrielrosaless/challenge-basto.git`
-
 2) Open a terminal in this folder and navigate to folder app.
     ### `cd .\frontend\challenge-basto\`
 
