@@ -43,7 +43,7 @@ export const ListAnimals = () => {
     };
     
     useEffect(() => {
-        fetchData();
+        fetchData(inputValue);
     }, [pageState.page, pageState.pageSize]);
 
     const cleanData = () => {

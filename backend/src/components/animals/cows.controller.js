@@ -5,28 +5,21 @@ import {validateInputs} from '../../utils/validateData.js';
 
 export const getCows = async (req, res) => {
     let {page , pageSize, paddockName} = req.query;
-    let cows;
+    
+    //Create an object to filter, because paddockName isnt coming always.
+    let filter = { isActive: true }
+    if (paddockName) filter.paddockName = { $regex: paddockName }
+    
     if (!page) page = 0;
     if (!pageSize) pageSize = 5;
 
     try {
-        if (!paddockName) {
-            // Get cows limit by paginations parameters.
-            cows = await Cow.find({ isActive: true })
-                .limit(pageSize)
-                .skip(pageSize * page);
-        }
-        else{
-            console.log('entre')
-            // Get cows limit by paginations parameters and paddockName.
-            cows = await Cow.find({ isActive: true, paddockName: { $regex: paddockName } })
-                .limit(pageSize)
-                .skip(pageSize * page);
-        }
+        const cows = await Cow.find(filter)
+            .limit(pageSize)
+            .skip(pageSize * page);
         
-        // Get total rows.
-        const totalCows = await Cow.count({ isActive: true });
-        
+        const totalCows = await Cow.count(filter);
+
         res.status(200).json({
             data: cows,
             total: totalCows

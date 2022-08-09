@@ -4,7 +4,7 @@ import axios from 'axios';
 export const getCows = async (page, pageSize,text) => {
     if (!text) text = '';
     const response = await axios
-        .get(`http://localhost:4000/api/cows/?pageSize=${pageSize}&page=${page}&paddockName=${text}`)
+        .get(`${process.env.REACT_APP_URL_API}/?pageSize=${pageSize}&page=${page}&paddockName=${text}`)
         .then(response => response)
         .catch(error => {
             return `Error!: ${error.response}`;
@@ -18,7 +18,7 @@ export const getCows = async (page, pageSize,text) => {
 
 export const createCow = async (body) => {
     const response = await axios
-        .post("http://localhost:4000/api/cows/", body)
+        .post(`${process.env.REACT_APP_URL_API}`, body)
         .then(response => response)
         .catch(error => {
             return {
@@ -36,7 +36,7 @@ export const createCow = async (body) => {
 
 export const editCow = async (body) => {
     const response = await axios
-        .put(`http://localhost:4000/api/cows/${body._id}`, body)
+        .put(`${process.env.REACT_APP_URL_API}/${body._id}`, body)
         .then(response => response)
         .catch((error) => {
             return {
@@ -53,7 +53,7 @@ export const editCow = async (body) => {
 
 export const deleteCow = async (id) => {
     const response = await axios
-        .delete(`http://localhost:4000/api/cows/${id}`)
+        .delete(`${ process.env.REACT_APP_URL_API}/${id}`)
         .then(response => response.data)
         .catch(error => {
             return `Error!: ${error.response}`;
