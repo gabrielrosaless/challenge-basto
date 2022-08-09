@@ -4,17 +4,26 @@ import {validateInputs} from '../../utils/validateData.js';
 
 
 export const getCows = async (req, res) => {
-    let {page , pageSize} = req.query;
-
+    let {page , pageSize, paddockName} = req.query;
+    let cows;
     if (!page) page = 0;
     if (!pageSize) pageSize = 5;
 
     try {
-        // Get cows limit by paginations parameters.
-        const cows = await Cow.find({ isActive: true })
-            .limit(pageSize)
-            .skip(pageSize * page);
-
+        if (!paddockName) {
+            // Get cows limit by paginations parameters.
+            cows = await Cow.find({ isActive: true })
+                .limit(pageSize)
+                .skip(pageSize * page);
+        }
+        else{
+            console.log('entre')
+            // Get cows limit by paginations parameters and paddockName.
+            cows = await Cow.find({ isActive: true, paddockName: { $regex: paddockName } })
+                .limit(pageSize)
+                .skip(pageSize * page);
+        }
+        
         // Get total rows.
         const totalCows = await Cow.count({ isActive: true });
         

@@ -12,6 +12,7 @@ import { AnimalForm } from "./AnimalForm";
 
 export const ListAnimals = () => {
    
+    // States
     const [pageState, setPageState] = useState({
         isLoading:false,
         data:[],
@@ -22,15 +23,17 @@ export const ListAnimals = () => {
     
     const [openDialog, setOpenDialog] = useState(false);
     const [selectedCow, setSelectedCow] = useState({});
-    
+    const [inputValue, setInputValue] = useState('');
     const [openModal, setOpenModal] = React.useState(false);
     const handleOpenModal = () => setOpenModal(true);
     const handleCloseModal = () => setOpenModal(false);
+    const [formValues, setFormValues] = useState(null);
 
-    const fetchData = async () => {
+    // Get data from API
+    const fetchData = async (text) => {
         try {
             setPageState(old => ({ ...old, isLoading: true }));
-            const {response, status} = await getCows(pageState.page, pageState.pageSize);
+            const {response, status} = await getCows(pageState.page, pageState.pageSize,text);
             if(status === 200){
                 setPageState(old => ({ ...old, isLoading: false, data: response.data, total: response.total}));
             }
@@ -48,8 +51,8 @@ export const ListAnimals = () => {
         setOpenModal(true);
     }
 
-    const [formValues, setFormValues] = useState(null);
 
+    /* Action buttons */
     const onClickEdit = (item) => {
         setFormValues(item);
         handleOpenModal(true);
@@ -65,6 +68,7 @@ export const ListAnimals = () => {
         await fetchData();
     }
 
+    // Buttons List
     const renderDetailsButton = (params) => {
         return (
             <strong>
@@ -131,10 +135,19 @@ export const ListAnimals = () => {
         }
     ];
     
-    const handleFilter = (e) => {
-        
+    const handleFilter = async (e) => {
+        setInputValue(e.target.value);   
     }
+    
+    // Hook to handle find data only after the user stop typing.
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            fetchData(inputValue);
+        }, 300)
+        return () => clearTimeout(timer)
+    }, [inputValue])
 
+    
     return (
         <div>
             <FilterAnimals data={pageState.data} handleChange={handleFilter} />
