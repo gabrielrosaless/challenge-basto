@@ -17,14 +17,7 @@
 3) Install backend dependences 
     ### `npm i`
 
-4) Create an .env file in the back-end directory with your database parameters and port number (default is 4000) as follows: 
-```
-MONGO_DATABASE=your-database-name
-MONGO_HOST=your-host
-MONGO_PORT=database-port
-PORT=api-port
-```
-For example:
+4) Modify the .env file in the backend directory with your database parameters and port number (default is 4000) as follows or let it default:
 ```
 MONGO_DATABASE=basto-database
 MONGO_HOST=localhost
@@ -50,11 +43,7 @@ To run unit testing run the follow comand:
 3) Install frontend dependences 
     ### `npm i`
 
-4) Create an .env file inside frontend\challenge-basto\ directory with API URL as follows: 
-```
-REACT_APP_URL_API=your-api-url
-```
-For example:
+4) Modify the .env file inside frontend\challenge-basto\ directory with API URL as follows, or let it default: 
 ```
 REACT_APP_URL_API=http://localhost:4000/api/cows
 ```
