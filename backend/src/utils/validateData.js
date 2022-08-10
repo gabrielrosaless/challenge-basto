@@ -34,6 +34,10 @@ export const validateInputs = async (cowData) => {
         response.msg = 'El ID Senasa debe contener 16 caracteres.';
         response.isOk = false;
     }
+    if (idSenasa.includes(' ')) {
+        response.msg = 'El ID Senasa no puede contener espacios.';
+        response.isOk = false;
+    }
 
     return response;
 };
