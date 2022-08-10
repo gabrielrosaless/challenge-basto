@@ -6,8 +6,8 @@ const FilterAnimals = ({data, handleChange}) => {
     
     return (
         <div style={{marginBottom:30}}>
-            <Typography variant="h6">Nombre potrero / Id senasa </Typography>
-            <OutlinedInput sx={{ width: '50%' }} placeholder="Buscar animal por ID" onChange={handleChange}/>
+            <Typography variant="h6" sx={{paddingBottom:1}}>Nombre potrero</Typography>
+            <OutlinedInput sx={{ width: '50%' }} placeholder="Buscar animal por nombre" onChange={handleChange}/>
         </div>
     )
 }
