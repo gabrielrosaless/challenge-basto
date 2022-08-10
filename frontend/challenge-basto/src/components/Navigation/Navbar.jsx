@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
-import logo_basto from '../assets/images/logo_basto.png';
+import logo_basto from '../../assets/images/logo_basto.png';
 
 export default function ButtonAppBar() {
     return (

@@ -1,4 +1,4 @@
-import React, {useEffect, useState}from "react";
+import React from "react";
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -6,10 +6,6 @@ import { Select } from "@mui/material";
 
 const CustomSelect = ({ options, title, labelId, labelSelect, value, handleInputChange,name }) => {
     
-    // const [value, setValue] = React.useState('');
-    // const handleChange = (event) => {
-    //     setValue(event.target.value);
-    // };
     return (
         <FormControl variant="standard">
             <InputLabel style={{ marginLeft: 5, marginRight: 5 }} id={labelId}>{title}</InputLabel>

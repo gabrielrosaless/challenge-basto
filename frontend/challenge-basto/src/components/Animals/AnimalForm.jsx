@@ -1,10 +1,9 @@
 import React, {useState} from 'react';
 import { useFormik } from 'formik';
 import { Modal, TextField, Box, Typography, Alert, Button, IconButton, Divider } from "@mui/material";
-import CustomSelect from "./CustomSelect";
+import CustomSelect from "../CustomComponents/CustomSelect";
 import CloseIcon from '@mui/icons-material/Close';
-import { createCow, editCow } from "../api/animalsAPI";
-import { useEffect } from 'react';
+import { createCow, editCow } from "../../api/animalsAPI";
 
 export const AnimalForm = ({ openModal, handleCloseModal, fetchData, formValues }) => {
    

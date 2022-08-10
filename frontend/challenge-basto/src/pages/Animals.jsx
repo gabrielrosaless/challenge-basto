@@ -1,6 +1,6 @@
 import React from "react";
-import { ListAnimals } from "../components/ListAnimals";
-import Titles from "../components/Titles";
+import { ListAnimals } from "../components/Animals/ListAnimals";
+import Titles from "../components/CustomComponents/Titles";
 import { Container, Stack } from '@mui/material';
 
 export const Animals = () => {

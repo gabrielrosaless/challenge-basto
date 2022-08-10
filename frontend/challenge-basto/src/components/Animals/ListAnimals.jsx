@@ -3,10 +3,10 @@ import { DataGrid } from '@mui/x-data-grid';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { Typography, Box, Button } from "@mui/material";
-import { getCows, deleteCow } from "../api/animalsAPI";
+import { getCows, deleteCow } from "../../api/animalsAPI";
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 import FilterAnimals from "./FilterAnimals";
-import ConfirmDialog from "./ConfirmDialog";
+import ConfirmDialog from "../CustomComponents/ConfirmDialog";
 import { AnimalForm } from "./AnimalForm";
 
 
