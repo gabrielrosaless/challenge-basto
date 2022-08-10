@@ -12,7 +12,7 @@
 
 2) Open a terminal in the folder of your cloned app and navigate to server folder.
 
-    ### `cd .\backend\`
+    ### `cd .\challenge-basto\backend\`
 
 3) Install backend dependences 
     ### `npm i`
@@ -45,7 +45,7 @@ To run unit testing run the follow comand:
 ## Steps to run client application (frontend).
 
 2) Open a terminal in this folder and navigate to folder app.
-    ### `cd .\frontend\challenge-basto\`
+    ### `cd .\challenge-basto\frontend\challenge-basto\`
 
 3) Install frontend dependences 
     ### `npm i`
