@@ -21,9 +21,5 @@ app.use(cors());
 
 // Routes middlewares
 app.use('/api/cows', cowsRoutes);
-app.get('/ping', (req, res) => {
-    console.log('hola')
-    res.send('pong');
-})
 
 export default app;

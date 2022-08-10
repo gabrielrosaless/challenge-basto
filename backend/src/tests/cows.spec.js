@@ -47,6 +47,22 @@ describe('TEST all methods from /api/cows (GET/POST/PUT)', () => {
                 await connectDB();
                 const response = await request(app).post('/api/cows').send(auxCow);
                 expect(response.status).toBe(400);
+                expect(response.body.message).toBe('Error! Complete todos los datos.');
+            })
+
+        test("/api/cows POST should fail because of idSenasa is not complete",
+            async () => {
+                let auxCow = {
+                    "idSenasa":"123",
+                    "typeAnimal": "Vaquillona",
+                    "weight": 26,
+                    "paddockName": "Potrero3",
+                    "typeDisp": "COLLAR",
+                    "numDisp": "ABC12378"
+                }
+                await connectDB();
+                const response = await request(app).post('/api/cows').send(auxCow);
+                expect(response.status).toBe(400);
                 expect(response.body.message).toBe('El ID Senasa debe contener 16 caracteres.');
             })
         
