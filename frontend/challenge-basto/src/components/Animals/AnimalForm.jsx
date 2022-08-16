@@ -19,7 +19,7 @@ export const AnimalForm = ({ openModal, handleCloseModal, fetchData, formValues 
     
     const [showAlert, setShowAlert] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
-         
+
     const formik = useFormik({
         initialValues: formValues || defaultValues,
         onSubmit: async (values, actions) =>  {
@@ -29,6 +29,7 @@ export const AnimalForm = ({ openModal, handleCloseModal, fetchData, formValues 
                     await fetchData();
                     handleCloseModal();
                     setShowAlert(false);
+                    actions.resetForm();
                 }
                 else { 
                     setErrorMsg(response.message);
@@ -41,13 +42,13 @@ export const AnimalForm = ({ openModal, handleCloseModal, fetchData, formValues 
                     await fetchData();
                     handleCloseModal();
                     setShowAlert(false);
+                    actions.resetForm();
                 }
                 else {
                     setErrorMsg(response.message);
                     setShowAlert(true);
                 }
             }
-            actions.resetForm();
         },
         enableReinitialize:true
     });
