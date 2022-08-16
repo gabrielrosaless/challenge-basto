@@ -19,10 +19,10 @@ export const AnimalForm = ({ openModal, handleCloseModal, fetchData, formValues 
     
     const [showAlert, setShowAlert] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
-        
+         
     const formik = useFormik({
         initialValues: formValues || defaultValues,
-        onSubmit: async values =>  {
+        onSubmit: async (values, actions) =>  {
             if (values._id) {
                 const response = await editCow(values);
                 if (response.status === 200) {
@@ -47,6 +47,7 @@ export const AnimalForm = ({ openModal, handleCloseModal, fetchData, formValues 
                     setShowAlert(true);
                 }
             }
+            actions.resetForm();
         },
         enableReinitialize:true
     });
